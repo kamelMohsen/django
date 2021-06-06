@@ -1,0 +1,6 @@
+{
+    "python.pythonPath": "C:\\Users\\kamel\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+    "python.formatting.provider": "black",
+    "window.zoomLevel" 1,
+    "python.languageServer": "Pylance"
+}
