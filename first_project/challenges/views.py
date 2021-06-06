@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse,HttpResponseRedirect
+from django.http import Http404,HttpResponseRedirect
 from django.urls import reverse
+from django.template.loader import render_to_string
 # Variables goes here
 
 months_tasks = {
@@ -17,18 +18,29 @@ months_tasks = {
     "nov":"11",
     "dec":"12"
 }
+not_found_message = "not found"
 
 # Create your views here.
+
+def index(request):
+    months = list(months_tasks.keys())
+    return render(request, "challenges/index.html", {
+        "months":months
+    })
+
+
 def months_n(request, month):
     months = list(months_tasks.keys())
     if month >= 1 and month <= len(months_tasks):
-        red_path = reverse("month-challenge",args=[months[month-1]])
-        return HttpResponseRedirect(red_path)
+        redirect_path = reverse("month-challenge",args=[months[month-1]])
+        return HttpResponseRedirect(redirect_path)
     else:
-        return HttpResponse("Wrong Month")
-
+        raise Http404()
 def months_s(request, month):
     if month in months_tasks.keys():
-        return HttpResponse(months_tasks[month])
+        return render(request, "challenges/challenge.html", {
+            "text": months_tasks[month],
+            "header": month
+        })
     else:
-        return HttpResponse("Wrong Month")
+        raise Http404()
